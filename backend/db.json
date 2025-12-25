@@ -1,0 +1,19 @@
+{
+  "transactions": [
+    {
+      "id": "obHbX-ItJ66FpoBTnZC_1",
+      "text": "Groceries",
+      "amount": 10000
+    },
+    {
+      "id": "61OYHHoXADlf9-2vuHlGq",
+      "text": "Cocaine",
+      "amount": 55000
+    },
+    {
+      "id": "Nibo92JxObpycN53jHJxR",
+      "text": "Rent",
+      "amount": -800
+    }
+  ]
+}

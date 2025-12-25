@@ -1,0 +1,1 @@
+3) Inventory & Stock Management System A web app for managing products and stock levels for a business. CRUD operations for products and categories Assign suppliers to products Stock in/out tracking Low-stock alerts User roles (Admin, Store Manager) makefrontend,backend using react node vite express mongodb tailwind 

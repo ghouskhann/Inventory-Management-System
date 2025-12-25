@@ -1,0 +1,252 @@
+/* ===============================
+   CSS VARIABLES (THEME SYSTEM)
+   =============================== */
+
+:root {
+  --bg-main: #f5f7fb;
+  --bg-card: #ffffff;
+  --bg-soft: #f0f2f8;
+
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+
+  --border-light: #e5e7eb;
+  --success: #16a34a;
+  --danger: #dc2626;
+
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
+  --shadow-md: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+/* ===== Dark Theme ===== */
+[data-theme="dark"] {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --bg-soft: #111827;
+
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+
+  --border-light: #334155;
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* ===============================
+   GLOBAL RESET & BASE
+   =============================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+/* ===============================
+   ROOT WRAPPER (FIXES main.jsx)
+   =============================== */
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===============================
+   LAYOUT CONTAINERS
+   =============================== */
+
+.app-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  padding: 24px;
+}
+
+/* ===============================
+   CARDS
+   =============================== */
+
+.card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===============================
+   HEADINGS
+   =============================== */
+
+h1, h2, h3 {
+  margin-top: 0;
+  color: var(--text-main);
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 8px;
+}
+
+/* ===============================
+   BUTTONS
+   =============================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  background: var(--primary);
+  color: #ffffff;
+  transition: all 0.25s ease;
+}
+
+.btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  background: var(--bg-soft);
+}
+
+/* ===============================
+   FORMS
+   =============================== */
+
+.form-control {
+  margin-bottom: 16px;
+}
+
+.form-control label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+}
+
+.form-control input,
+.form-control select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-soft);
+  color: var(--text-main);
+}
+
+.form-control input:focus,
+.form-control select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* ===============================
+   TABLE (Inventory View)
+   =============================== */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.table th {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.table tr:hover {
+  background: var(--bg-soft);
+}
+
+/* ===============================
+   STATUS TAGS
+   =============================== */
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: rgba(22,163,74,0.15);
+  color: var(--success);
+}
+
+.badge-danger {
+  background: rgba(220,38,38,0.15);
+  color: var(--danger);
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
+
+footer {
+  margin-top: auto;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-light);
+  text-align: center;
+  padding: 14px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
