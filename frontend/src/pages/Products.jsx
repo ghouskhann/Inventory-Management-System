@@ -20,10 +20,10 @@ export default function Products() {
     return () => (mounted = false);
   }, []);
 
-  function handleAdd(newProduct) {
-    // prepend to show immediately
-    setProducts(p => [newProduct, ...p]);
-  }
+async function handleAdd() {
+  const res = await API.get("/products");
+  setProducts(res.data || []);
+}
 
   return (
     <div className="page">

@@ -15,7 +15,7 @@ export default function ProductTable({ products }) {
         </thead>
         <tbody>
           {products.map(p => (
-            <tr key={p.id}>
+            <tr key={p._id || p.id}>
               <td>{p.name}</td>
               <td>{p.category}</td>
               <td>{p.supplier}</td>

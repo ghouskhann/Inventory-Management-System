@@ -36,11 +36,10 @@ export default function AddProduct({ onAdd }) {
       setSupplier("");
     // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      // If backend requires admin token and call fails, still update UI locally
-      const fallback = { id: Date.now(), ...payload };
-      if (onAdd) onAdd(fallback);
-      setError("Could not save to server (offline or unauthorized). Added locally.");
-    } finally {
+  console.error(err);
+  setError("Product NOT saved to server");
+}
+ finally {
       setLoading(false);
     }
   }

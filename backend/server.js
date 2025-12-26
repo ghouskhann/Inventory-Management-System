@@ -5,7 +5,14 @@ const cors = require("cors");
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://khanmanagement207.vercel.app",
+    "http://localhost:5173"
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
