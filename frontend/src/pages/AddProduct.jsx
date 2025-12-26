@@ -1,62 +1,83 @@
 import { useState } from "react";
+import InputField from "../components/Inputfield";
+import Button from "../components/Button";
 import API from "../services/api";
 
 export default function AddProduct({ onAdd }) {
-  const [form, setForm] = useState({
-    name: "",
-    category: "",
-    supplier: "",
-    quantity: 0,
-    minStock: 0
-  });
-
+  const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [minStock, setMinStock] = useState(0);
+  const [category, setCategory] = useState("");
+  const [supplier, setSupplier] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  }
+  const [error, setError] = useState(null);
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    e?.preventDefault();
+    setError(null);
+    const payload = {
+      name,
+      quantity: Number(quantity || 0),
+      minStock: Number(minStock || 0),
+      category,
+      supplier,
+    };
+
     setLoading(true);
-    setError("");
-
     try {
-      await API.post("/products", {
-        ...form,
-        quantity: Number(form.quantity),
-        minStock: Number(form.minStock),
-      });
-
-      setForm({ name:"", category:"", supplier:"", quantity:0, minStock:0 });
-      onAdd();
-    } catch {
-      setError("Failed to save product");
-    } finally {
+      const res = await API.post("/products", payload);
+      const created = res.data;
+      if (onAdd) onAdd(created);
+      // reset
+      setName("");
+      setQuantity(0);
+      setMinStock(0);
+      setCategory("");
+      setSupplier("");
+    // eslint-disable-next-line no-unused-vars
+    } catch (err) {
+  console.error(err);
+  setError("Product NOT saved to server");
+}
+ finally {
       setLoading(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <h3>Add Product</h3>
+    <form className="space-y-3 max-w-md card" onSubmit={handleSubmit}>
+      <h3 className="card-title">Add Product</h3>
 
-      {["name","category","supplier","quantity","minStock"].map(f => (
-        <input
-          key={f}
-          name={f}
-          value={form[f]}
-          onChange={handleChange}
-          placeholder={f}
-        />
-      ))}
+      <div>
+        <label className="block mb-2 text-gray-300 font-medium">Product Name</label>
+        <input value={name} onChange={(e)=>setName(e.target.value)} className="bg-gray-800 border border-gray-700 text-white p-3 w-full rounded-lg" />
+      </div>
 
-      {error && <p style={{ color: "orange" }}>{error}</p>}
+      <div>
+        <label className="block mb-2 text-gray-300 font-medium">Quantity</label>
+        <input type="number" value={quantity} onChange={(e)=>setQuantity(e.target.value)} className="bg-gray-800 border border-gray-700 text-white p-3 w-full rounded-lg" />
+      </div>
 
-      <button disabled={loading}>
-        {loading ? "Saving..." : "Add Product"}
-      </button>
+      <div>
+        <label className="block mb-2 text-gray-300 font-medium">Minimum Stock</label>
+        <input type="number" value={minStock} onChange={(e)=>setMinStock(e.target.value)} className="bg-gray-800 border border-gray-700 text-white p-3 w-full rounded-lg" />
+      </div>
+
+      <div>
+        <label className="block mb-2 text-gray-300 font-medium">Category</label>
+        <input value={category} onChange={(e)=>setCategory(e.target.value)} className="bg-gray-800 border border-gray-700 text-white p-3 w-full rounded-lg" />
+      </div>
+
+      <div>
+        <label className="block mb-2 text-gray-300 font-medium">Supplier</label>
+        <input value={supplier} onChange={(e)=>setSupplier(e.target.value)} className="bg-gray-800 border border-gray-700 text-white p-3 w-full rounded-lg" />
+      </div>
+
+      {error && <div className="text-sm text-yellow-300">{error}</div>}
+
+      <div>
+        <Button text={loading ? "Adding..." : "Add Product"} onClick={handleSubmit} />
+      </div>
     </form>
   );
 }
