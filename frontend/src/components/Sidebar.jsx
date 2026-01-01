@@ -1,16 +1,19 @@
 import { NavLink } from "react-router-dom";
 
-const links = [
-  { name: "Dashboard", path: "/" },
-  { name: "Products", path: "/products" },
-  { name: "Categories", path: "/categories" },
-  { name: "Suppliers", path: "/suppliers" },
-  { name: "Stock", path: "/stock" },
-  { name: "Users", path: "/users" },
-  { name: "Reports", path: "/reports" },
+const allLinks = [
+  { name: "Dashboard", path: "/", roles: ["Admin", "Manager"] },
+  { name: "Products", path: "/products", roles: ["Admin", "Manager"] },
+  { name: "Categories", path: "/categories", roles: ["Admin", "Manager"] },
+  { name: "Suppliers", path: "/suppliers", roles: ["Admin", "Manager"] },
+  { name: "Stock", path: "/stock", roles: ["Admin", "Manager"] },
+  { name: "Users", path: "/users", roles: ["Admin"] },
+  { name: "Reports", path: "/reports", roles: ["Admin", "Manager"] },
 ];
 
 export default function Sidebar() {
+  const role = localStorage.getItem("role") || "Manager";
+  const links = allLinks.filter(link => link.roles.includes(role));
+
   return (
     <aside className="card" style={{ width: "260px", borderRadius: "0" }}>
       <h3 className="page-subtitle" style={{ marginBottom: "16px" }}>

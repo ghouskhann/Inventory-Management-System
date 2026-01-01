@@ -19,6 +19,7 @@ export default function Categories() {
           if (!mounted) return;
           const cats = Array.from(new Set((res.data || []).map((p) => p.category || "Uncategorized")));
           setCategories(cats.map((c, i) => ({ id: i + 1, name: c })));
+        // eslint-disable-next-line no-unused-vars
         } catch (e) {
           // last fallback: sample data
           if (!mounted) return;

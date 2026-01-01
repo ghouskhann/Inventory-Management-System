@@ -6,24 +6,52 @@ import API from "../services/api";
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
+  // Debounce input
   useEffect(() => {
-    let mounted = true;
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 400); // 400ms delay
 
-    API.get("/products")
-      .then(res => {
-        if (mounted) setProducts(res.data || []);
-      })
-      .catch(() => setProducts([]))
-      .finally(() => mounted && setLoading(false));
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
-    return () => (mounted = false);
-  }, []);
+  const fetchProducts = async (query = "") => {
+    try {
+      setLoading(true);
+      const url = query ? `/products/search?q=${encodeURIComponent(query)}` : "/products";
+      const res = await API.get(url);
+      setProducts(res.data || []);
+      console.log("✅ Products loaded:", res.data);
+    } catch (err) {
+      console.error("❌ Failed to load products:", err.message);
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-async function handleAdd() {
-  const res = await API.get("/products");
-  setProducts(res.data || []);
-}
+  // Fetch products when debounced search changes
+  useEffect(() => {
+    fetchProducts(debouncedSearch);
+  }, [debouncedSearch]);
+
+  // Listen to global productsUpdated event
+  useEffect(() => {
+    const handler = async () => {
+      await fetchProducts(debouncedSearch);
+    };
+    window.addEventListener("productsUpdated", handler);
+    return () => window.removeEventListener("productsUpdated", handler);
+  }, [debouncedSearch]);
+
+  // Refresh products after adding a new one
+  function handleAdd(newProduct) {
+    console.log("🆕 Product added:", newProduct);
+    fetchProducts(debouncedSearch);
+  }
 
   return (
     <div className="page">
@@ -55,16 +83,29 @@ async function handleAdd() {
 
         {/* Product Table */}
         <div className="card" style={{ transition: "all 0.2s" }}>
+          {/* Search always visible */}
+          <div className="mb-4">
+            <div className="relative">
+              <label className="block mb-2 text-gray-300 font-medium">Search Products</label>
+              <input
+                type="text"
+                placeholder="Search by name or category..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-black-800 border border-gray-700 text-white pl-4 pr-4 py-3 w-full rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              />
+            </div>
+          </div>
+
           {loading ? (
-            <p style={{ textAlign: "center", padding: "24px", color: "#9ca3af" }}>
-              Loading products...
-            </p>
+            <p className="text-center p-6 text-gray-400">Loading products...</p>
+          ) : products.length === 0 ? (
+            <p className="text-center p-6 text-gray-400">No products found. Add one to get started!</p>
           ) : (
             <ProductTable products={products} />
           )}
         </div>
       </div>
-
     </div>
   );
 }

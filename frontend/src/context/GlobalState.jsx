@@ -13,9 +13,12 @@ export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
   useEffect(() => {
-    api.getTransactions()
-      .then(data => dispatch({ type: "GET_SUCCESS", payload: data }))
-      .catch(() => dispatch({ type: "GET_ERROR" }));
+    const token = localStorage.getItem("token");
+    if (token) {
+      api.getTransactions()
+        .then(data => dispatch({ type: "GET_SUCCESS", payload: data }))
+        .catch(() => dispatch({ type: "GET_ERROR" }));
+    }
   }, []);
 
   const addTransaction = async (tx) => {

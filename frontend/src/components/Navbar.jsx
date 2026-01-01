@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <header className="card" style={{ borderRadius: "0", borderLeft: "none", borderRight: "none" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -11,7 +15,11 @@ export default function Navbar() {
 
         <div style={{ display: "flex", gap: "16px" }}>
           <button className="btn">Notifications</button>
-          <button className="btn">Profile</button>
+          <button className="btn" onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+            navigate("/login");
+          }}>Logout</button>
         </div>
       </div>
     </header>
