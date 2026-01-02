@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const Product = require("../models/Product");
 const Transaction = require("../models/Transaction");
-const auth = require("../middleware/auth");
 
 /**
  * CREATE PRODUCT
@@ -70,10 +69,9 @@ router.get("/search", async (req, res) => {
 /**
  * STOCK IN / STOCK OUT
  */
-router.put("/stock/:id", auth(), async (req, res) => {
+router.put("/stock/:id", async (req, res) => {
   try {
     const { amount } = req.body;
-    const userId = req.user.id;
 
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json("Product not found");
@@ -89,7 +87,6 @@ router.put("/stock/:id", auth(), async (req, res) => {
       productId: product._id,
       type,
       quantity: Math.abs(quantityChange),
-      userId,
       timestamp: new Date()
     });
 

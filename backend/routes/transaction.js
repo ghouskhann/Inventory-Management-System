@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const Transaction = require("../models/Transaction");
-const auth = require("../middleware/auth");
 
 /**
  * CREATE TRANSACTION
@@ -9,13 +8,11 @@ router.post("/", async (req, res) => {
   try {
     console.log("📝 Creating transaction:", req.body);
     const { productId, type, quantity } = req.body;
-    const userId = req.user ? req.user.id : null;
 
     const transaction = await Transaction.create({
       productId,
       type,
       quantity,
-      userId,
       timestamp: new Date()
     });
 
